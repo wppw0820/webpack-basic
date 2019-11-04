@@ -9,9 +9,26 @@
 </head>
 <!-- main.js用的是node的commonjs规范浏览器不支持 -->
 <!-- <script src="../main.js"></script> -->
-<script src="../dist/bundle.js"></script>
+<!-- <script src="../dist/bundle.js"></script> -->
 <body>
- 我是主页
+ <div class="app">我是主页</div>
+ <button>点我跳转列表页</button>
+ <ul>
+  <li>1</li>
+  <li>2</li>
+  <li>3</li>
+  <li>4</li>
+  <li>5</li>
+  <li>
+    <span class="glyphicon glyphicon-heart"></span>
+    6
+  </li>
+ </ul>
 </body>
-
+<script>
+ document.querySelector('button').onclick = function (){
+   // window.open('list.html') // 打开新窗口 但是不能前进后退 
+   location.assign('list.html')
+ }
+</script>
 </html>

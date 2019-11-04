@@ -1,0 +1,21 @@
+
+body{
+  background-image: url('../images/bgc.png');
+  background-repeat: no-repeat;
+  
+}
+.app{
+  display: inline-block;
+  color: #fff;
+}
+ul{
+  margin: 0;
+  padding: 0;
+  
+}
+ul li{
+  list-style: none;
+  height: 50px;
+  background-color: skyblue;
+  margin-bottom: 20px;
+}

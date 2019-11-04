@@ -1,0 +1,6 @@
+ul li:first-of-type{
+  background-color: yellow;
+}
+ul li:last-of-type{
+  background-color: pink;
+}

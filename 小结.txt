@@ -1,0 +1,3 @@
+只有在开发时才需要使用自动编译工具，例如webpack-dev-server,webpack-dev-middleware,包括开启watch模式
+项目上线时都会直接使用webpack进行打包构建，不需要使用这些自动编译工具
+自动编译工具只是为了提高开发体验 官方强烈建议使用webpack-dev-server
