@@ -29,13 +29,13 @@ module.exports = {
     hot: true, // 热模块更新默认不开启，开启后意味着每次更新只会编译打补丁形式 更新的那些部分减少开销
     // compress:true, // 服务端资源压缩，http服务技术 开启后返回资源压缩成很小的内存
 
-    contentBase: resolve('public')// 也可以在package.json中 dev中 --contentBase public 配置入口主页的路径 默认是在根目录 / 的 当然也可以用html插件更好
+    contentBase: resolve('public')// 也可以在package.json中 dev中 --contentBase public 配置入口主页的路径 默认是在根目录 / 的当然也可以用html插件更好
   },
   // 插件配置模块
   plugins: [
     new htmlWebpackPlugin({
       // 书写配置
-      /* 作用：1，在开发时，根据模板在express项目根目录下生成html文件（类似于devServer生成的bundle.js）
+			/* 作用：1，在开发时，根据模板在express项目根目录下生成html文件（类似于devServer生成的bundle.js）
               2, devServer时自动引入bundle.js
               3, 打包时会在dist中自动生成index.html
        */
@@ -53,36 +53,47 @@ module.exports = {
     })
   ],
   // loader配置模块（加载器用来解决css,less,图片，字体 在入口文件不识别问题）
-  module:{
-    rules:[
+  module: {
+    rules: [
       // webpack读取loader时，是从右到左读取，会将css文件先交给最右侧loader来处理
       // loader的执行顺序是从右到左的管道方式链式调用
       //css-loader：解析css文件 style-loader：将解析出来的结果 放到html中使其生效
       {
-        test: /\.css$/ ,//正则匹配什么类型文件,
-        use: ['style-loader','css-loader'] //用什么来解析你匹配的文件
+        test: /\.css$/,//正则匹配什么类型文件,
+        use: ['style-loader', 'css-loader'] //用什么来解析你匹配的文件
       },
       {
         test: /\.less$/,
-        use: ['style-loader','css-loader','less-loader']
+        use: ['style-loader', 'css-loader', 'less-loader']
       },
       {
         test: /\.s(a|c)ss$/,
-        use: ['style-loader','css-loader','sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
-       // 可以使用url-loader 但是必须要下载file-loader，因为url-loader是基于file-loader的封装
+      // 可以使用url-loader 但是必须要下载file-loader，因为url-loader是基于file-loader的封装
       {
         test: /\.(jpg|jpeg|png|bmp|gif|woff|woff2|svg|eot|ttf)$/,
         use: {
           loader: 'url-loader',
-          options:{
-            name: 'images/[name].[ext]', // name属性就是设定打包后的图片路径，[name]保持原图片名字 [ext]图片类型, 默认打包之后图片名字会被唯一标识化
-            limit: 5 * 1024
-          }
+          options: {
+            // name属性就是设定打包后的图片路径，[name]保持原图片名字 [hash]生成hash唯一名字 [ext]图片类型, 默认打包之后图片名字会被唯一标识化[hash:6]限制6位hash值
+            name: 'images/[name].[ext]',
+            limit: 5 * 1024,
+            // 也可以使用outputPath来指定图片打包存放目录
+            // outputPath: 'images'
+          },
+
         }
+      },
+      // babel 解析js的高级语法，使浏览器能够解析
+      {
+        test: /\.js/,
+        use: {
+          loader: 'babel-loader',
+        },
+        exclude: /node_modules/
       }
-     
-      
     ]
-  }
+  },
+  devtool:'cheap-module-eval-source-map' // 源码映射，准确定位代码某行 开发环境推荐使用这一个 生产环境建议不适用source-map
 }
