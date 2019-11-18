@@ -95,5 +95,5 @@ module.exports = {
       }
     ]
   },
-  devtool:'cheap-module-eval-source-map' // 源码映射，准确定位代码某行 开发环境推荐使用这一个 生产环境建议不适用source-map
+  devtool:'cheap-module-eval-source-map' // 源码映射,准确定位代码某行 开发环境推荐使用这一个 生产环境建议不适用source-map
 }
