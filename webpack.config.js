@@ -5,6 +5,8 @@ const path = require('path')
 // 引入html插件
 const htmlWebpackPlugin = require('html-webpack-plugin') // 这是一个构造函数 使用时需要new
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 这个插件是每次build之前先清除之前的防止意外情况
+const webpack = require('webpack')
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -29,7 +31,8 @@ module.exports = {
     hot: true, // 热模块更新默认不开启，开启后意味着每次更新只会编译打补丁形式 更新的那些部分减少开销
     // compress:true, // 服务端资源压缩，http服务技术 开启后返回资源压缩成很小的内存
 
-    contentBase: resolve('public')// 也可以在package.json中 dev中 --contentBase public 配置入口主页的路径 默认是在根目录 / 的当然也可以用html插件更好
+    contentBase: resolve('public'),// 也可以在package.json中 dev中 --contentBase public 配置入口主页的路径 默认是在根目录 / 静态资源托管到public下，如果http请求直接全路径能找到就直接返回资源，不能找到就去托管找然后返回，当然也可以用html插件更好
+
   },
   // 插件配置模块
   plugins: [
@@ -40,17 +43,19 @@ module.exports = {
               3, 打包时会在dist中自动生成index.html
        */
       filename: 'index.html', // 名字一般起index.html，作用是在devServer时,根据template在根目录中生成 index.html模板（也是内存），这就解决了直接访问端口不能进入主页的情况
-      template: './public/index.html', // 要提供的模板
+      template: './src/index.html', // 要提供的模板
     }),
     new CopyWebpackPlugin([
       {
         from: 'public',
-        to: '', // 默认dist根目录
+        to: 'public', // 默认dist根目录
       }
     ], {
       ignore: [],
       copyUnmodified: true,
-    })
+    }),
+    new CleanWebpackPlugin(),
+    new webpack.BannerPlugin('wppw所有') // 添加打包之后的一些注解信息
   ],
   // loader配置模块（加载器用来解决css,less,图片，字体 在入口文件不识别问题）
   module: {
@@ -85,6 +90,11 @@ module.exports = {
 
         }
       },
+      // html中img标签的图片处理
+      {
+        test: /\.(htm|html)$/i,
+        loader: 'html-withimg-loader',
+      },
       // babel 解析js的高级语法，使浏览器能够解析
       {
         test: /\.js/,
@@ -95,5 +105,5 @@ module.exports = {
       }
     ]
   },
-  devtool:'cheap-module-eval-source-map' // 源码映射,准确定位代码某行 开发环境推荐使用这一个 生产环境建议不适用source-map
+  devtool: 'cheap-module-eval-source-map' // 源码映射,准确定位代码某行 开发环境推荐使用这一个 生产环境建议不适用source-map
 }
