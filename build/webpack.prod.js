@@ -12,7 +12,7 @@ module.exports = merge(baseConfig, {
   plugins: [
     // webpack内置定义环境变量插件可以在任何地方使用
     new webpack.DefinePlugin({
-      IS_ENV: 'false'
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     })
   ],
   devtool: 'cheap-module-source-map' // 源码映射,准确定位代码某行 开发环境推荐使用这一个 生产环境建议不适用source-map
