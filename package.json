@@ -43,6 +43,6 @@
     "@babel/runtime": "^7.7.2",
     "bootstrap": "^3.4.1",
     "html-withimg-loader": "^0.1.16",
-    "jquery": "^3.4.1"
+    "jquery": "^3.5.0"
   }
 }
